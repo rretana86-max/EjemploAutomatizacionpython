@@ -1,0 +1,146 @@
+Ejercicio 1 — Recordatorio de citas
+Vamos a simular una pequeña parte del futuro proyecto.
+Crea:
+python-learning/
+│
+├── .venv/
+│
+├── main.py
+│
+└── citas.py
+Todavía NO FastAPI.
+Todavía NO PostgreSQL.
+Todavía NO WhatsApp.
+Vamos a simular esos datos con diccionarios.
+Paso 1 — Datos
+En citas.py vas a crear una lista de citas.
+Por ejemplo, conceptualmente:
+citas = [
+    {
+        "id": 1,
+        "cliente": "Carlos",
+        "telefono": "8888-1111",
+        "servicio": "Consulta",
+        "hora": "10:00",
+        "estado": "pendiente"
+    },
+    {
+        "id": 2,
+        "cliente": "María",
+        "telefono": "8888-2222",
+        "servicio": "Limpieza",
+        "hora": "11:30",
+        "estado": "confirmada"
+    }
+]
+Aquí practicas:
+- lista
+- diccionarios
+- strings
+- acceso a valores
+Paso 2 — Función
+En citas.py, crea una función:
+obtener_citas_pendientes()
+La función debe recorrer la lista y devolver únicamente las citas cuyo estado sea:
+pendiente
+Aquí vas a utilizar:
+for
+y:
+if
+y diccionarios.
+Paso 3 — Módulo
+Ahora viene la parte importante.
+En main.py no vuelvas a escribir la lista de citas.
+Importa desde citas.py.
+Algo conceptualmente así:
+from citas import obtener_citas_pendientes
+Y luego:
+citas = obtener_citas_pendientes()
+Después muestras las citas pendientes.
+Paso 4 — Automatización
+Ahora quiero que main.py genere un mensaje automáticamente.
+Por cada cita pendiente debería producir algo parecido a:
+Hola Carlos, le recordamos que tiene una Consulta programada a las 10:00.
+Pero no quiero que copies esa frase literalmente.
+Quiero que tú construyas el mensaje utilizando los valores del diccionario.
+Por ejemplo:
+cliente
+servicio
+hora
+Paso 5 — Simular WhatsApp
+Todavía no vamos a conectar WhatsApp.
+Vamos a crear una función:
+enviar_recordatorio()
+Pero por ahora solamente imprimirá:
+Enviando WhatsApp a 8888-1111...
+Hola Carlos...
+Así estamos simulando:
+Cita
+ ↓
+Python
+ ↓
+Procesar datos
+ ↓
+Generar mensaje
+ ↓
+Enviar WhatsApp
+Exactamente el flujo que después vamos a convertir en uno real.
+Y aquí viene lo interesante
+Cuando termines ese ejercicio, tendremos algo como:
+main.py
+   ↓
+citas.py
+   ↓
+lista de diccionarios
+   ↓
+filtrar citas pendientes
+   ↓
+generar mensaje
+   ↓
+simular envío
+Eso ya es una pequeña automatización.
+Después podemos evolucionarla progresivamente:
+Ejercicio 1
+Datos escritos directamente en Python.
+↓
+Ejercicio 2
+Leer las citas desde un archivo JSON.
+↓
+Ejercicio 3
+Leer las citas desde PostgreSQL.
+
+Vamos con el ejercicio 3. Antes de tocar código, te propongo la arquitectura para que la apruebes (tal como venimos trabajando):
+
+Lo que cambia:
+
+citas.py deja de leer un .json/.txt y pasa a consultar PostgreSQL con psycopg2 (o psycopg v3).
+obtener_citas() mantiene el mismo nombre y sigue devolviendo una lista de diccionarios — así ni main.py ni notificaciones.py se enteran de que cambió la fuente. Es el mismo principio que aplicaste al pasar de lista fija a JSON.
+
+Lo que necesitás tener listo primero (esto sí depende de vos, no de código):
+
+PostgreSQL instalado y corriendo localmente (o accesible).
+Una base de datos creada, por ejemplo citas_db.
+Una tabla citas con columnas equivalentes a tu JSON: id, paciente, fecha, hora, motivo, estado.
+Los datos de tu citas.json insertados ahí (te puedo generar el INSERT a partir del JSON que ya tenés).
+
+Puntos a cuidar:
+
+Conexión: nunca hardcodear usuario/contraseña en el código — usar variables de entorno (.env + python-dotenv), práctica que ya te va a servir para el proyecto grande.
+Cerrar la conexión siempre, aunque haya error (with o try/finally, mismo patrón que ya interiorizaste con open() de archivos).
+cursor.fetchall() te devuelve tuplas, no diccionarios — hay que convertir cada fila a diccionario para que obtener_citas() siga devolviendo el mismo formato que antes.
+↓
+Ejercicio 4
+Consumir una API externa.
+↓
+Ejercicio 5
+Ejecutar automáticamente cada cierto tiempo.
+↓
+Ejercicio 6
+Registrar errores.
+↓
+Ejercicio 7
+Enviar realmente mediante una API de WhatsApp.
+↓
+Ejercicio 8
+Convertirlo en un servicio FastAPI.
+Ahí ya estaríamos prácticamente construyendo las piezas de SmartAppointments, pero sin tirarnos de cabeza al proyecto grande.

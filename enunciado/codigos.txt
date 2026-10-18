@@ -1,0 +1,13 @@
+def leer_json(ruta_archivo):    
+    """
+    Lee un archivo JSON y devuelve su contenido como un diccionario de Python.
+
+    :param ruta_archivo: Ruta del archivo JSON a leer.
+    :return: lista de diccionarios con el contenido del archivo JSON.
+    """
+    with open(ruta_archivo, 'r', encoding='utf-8') as archivo:
+        contenido = json.load(archivo)
+    return contenido
+
+    #leer desde posgresql
+    
